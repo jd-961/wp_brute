@@ -2,7 +2,9 @@
 WORDPRESS BRUTEFORCE
 ```
 
+```
 Setup & Usage : 
+```
 
 Linux:
 ```
@@ -23,8 +25,9 @@ Windows:
 install python3
 pip3 install requests
 pip3 install smtplib
+```
 
-
+```
 usage:
 python3 script.py list_url.txt threadcount
 ```
