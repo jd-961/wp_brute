@@ -16,7 +16,7 @@ sudo pip3 install requests
 
 
 usage:
-python3 script.py
+python3 script.py list_url.txt threadcount
 ```
 
 Windows:
@@ -28,6 +28,6 @@ pip3 install requests
 
 ```
 usage:
-python3 script.py list_url.txt threadcount
+python script.py list_url.txt threadcount
 ```
 
