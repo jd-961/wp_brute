@@ -14,7 +14,6 @@ sudo apt install python3-pip
 
 sudo pip3 install requests
 
-sudo pip3 install smtplib
 
 usage:
 python3 script.py
@@ -23,8 +22,8 @@ python3 script.py
 Windows:
 ```
 install python3
+
 pip3 install requests
-pip3 install smtplib
 ```
 
 ```
